@@ -1,13 +1,17 @@
-#For All Archeage Users 
-This project is Archeage Web API,
+# Archeage Web API
+This project is for all Archeage users. 
 
-###Development list
- - Routing bond region
- - Discord bot
+### Implemented
+- Bond	  : Route bond region
+- User	  : Load user's information
 
-###Future work
-- Check price in auction
+### Unimplemented
+- Follow  : Keep an eyes on user's changes
+- Price	  : Check price of item in game
+- Crops	  : Calculate the time until growth of crops and alarm it
+- Raid	  : Set an alarm the time to go to the raid
+- Auction : Auction raid item
 - Compare character equipment
 - Equipment recipe (with labor point and gold)
-- An inland trading price 
+
 
