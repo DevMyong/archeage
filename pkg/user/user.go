@@ -1,8 +1,8 @@
 package user
 
 import (
-	"archeage/pkg/archeage"
 	"fmt"
+	"github.com/DevMyong/archeage/pkg/archeage"
 	"github.com/PuerkitoBio/goquery"
 	"net/http"
 	"net/url"

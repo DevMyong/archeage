@@ -1,8 +1,8 @@
 package bond
 
 import (
-	"archecord/pkg/archeage"
 	"fmt"
+	"github.com/DevMyong/archeage/pkg/archeage"
 	"github.com/PuerkitoBio/goquery"
 	"strings"
 )

@@ -1,7 +1,7 @@
 package archeage
 
 import (
-	"archeage/pkg/user"
+	"github.com/DevMyong/archeage/pkg/user"
 	"github.com/PuerkitoBio/goquery"
 	"io"
 	"log"
