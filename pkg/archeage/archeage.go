@@ -1,7 +1,6 @@
 package archeage
 
 import (
-	"github.com/DevMyong/archeage/pkg/user"
 	"github.com/PuerkitoBio/goquery"
 	"io"
 	"log"
@@ -46,5 +45,5 @@ func (a *Archeage) do(method, url string, body io.Reader) (*goquery.Document, er
 }
 
 func SetURI(host string, path string, params *url.Values) url.URL {
-	return url.URL{Scheme: user.SchemeDefault, Host: host, Path: path, RawQuery: params.Encode()}
+	return url.URL{Scheme: SchemeDefault, Host: host, Path: path, RawQuery: params.Encode()}
 }

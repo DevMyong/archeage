@@ -16,6 +16,9 @@ const (
 	SearchMaterialName = "table:nth-child(1) > tbody > tr:nth-child(%d) > th"
 	SearchWestRegion   = "table:nth-child(1) > tbody > tr:nth-child(%d) > td > ul > li.point"
 	SearchEastRegion   = "table.table-bond.right > tbody > tr:nth-child(%d) > td > ul > li.point"
+
+	SchemeDefault = "https"
+	URLArcheage   = "archeage.xlgames.com"
 )
 
 var ServerNameMap = map[string]string{

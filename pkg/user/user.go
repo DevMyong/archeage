@@ -40,8 +40,6 @@ const (
 	sep           = "@"
 	DefaultServer = "MORPHEUS"
 
-	SchemeDefault = "https"
-	URLArcheage   = "archeage.xlgames.com"
 	PathSearch    = "/search"
 
 	PageBar             = ".pg_inner"
@@ -143,7 +141,7 @@ func getNameAndServer(args string) (name, server string, err error) {
 	return
 }
 func searchUser(params *url.Values) (docUsers *goquery.Document, err error) {
-	urlSearchUser := archeage.SetURI(URLArcheage, PathSearch, params)
+	urlSearchUser := archeage.SetURI(archeage.URLArcheage, PathSearch, params)
 
 	aa := archeage.New(http.DefaultClient)
 
@@ -169,7 +167,7 @@ func getTotalPage(doc *goquery.Document) int {
 
 func findUUID(params *url.Values) (uuid string, err error) {
 	aa := archeage.New(http.DefaultClient)
-	urlUsers := archeage.SetURI(URLArcheage, PathSearch, params)
+	urlUsers := archeage.SetURI(archeage.URLArcheage, PathSearch, params)
 	docUsers, err := aa.Get(urlUsers.String())
 	if err != nil {
 		return
