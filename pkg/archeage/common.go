@@ -27,6 +27,7 @@ const (
 	CharacterEquipScore = ".score"
 	CharacterBasicDPS   = "#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(%d) > dd"
 
+	PathCharacterFormat = "/characters/%s"
 )
 
 var ServerNameMap = map[string]string{

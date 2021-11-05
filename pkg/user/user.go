@@ -191,7 +191,8 @@ func findUUID(params *url.Values) (uuid string, err error) {
 
 func getUserData(uuid string) (docUser *goquery.Document, err error) {
 	aa := archeage.New(http.DefaultClient)
-	urlUser := archeage.SetURI(archeage.URLArcheage, PathSearch+uuid, nil)
+	path := fmt.Sprintf(archeage.PathCharacterFormat, uuid)
+	urlUser := archeage.SetURI(archeage.URLArcheage, path, nil)
 	docUser, err = aa.Get(urlUser.String())
 	if err != nil {
 		return
