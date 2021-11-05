@@ -6,8 +6,10 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type User struct {
@@ -40,7 +42,7 @@ const (
 	sep           = "@"
 	DefaultServer = "MORPHEUS"
 
-	PathSearch    = "/search"
+	PathSearch = "/search"
 
 	PageBar             = ".pg_inner"
 	CharacterList       = ".s_char_lst"
@@ -64,14 +66,15 @@ var ServerNameEngToKor = map[string]string{
 	"RANGORA":  "랑그레이",
 	"SEASON":   "환락",
 }
-func getParams(name, server string)(params *url.Values){
+
+func getParams(name, server string) (params *url.Values) {
 	params = &url.Values{}
 	params.Set("dt", "characters")
 	params.Add("keyword", name)
 	params.Add("server", server)
 	return
 }
-func GetUserInfo(args Args, flagMap FlagMap) (userInfo User, err error) {
+func NewUserInfo(args Args, flagMap FlagMap) (userInfo User, err error) {
 	name, server, err := getNameAndServer(args[0])
 	if err != nil {
 		return
@@ -94,26 +97,24 @@ func GetUserInfo(args Args, flagMap FlagMap) (userInfo User, err error) {
 			return
 		}
 	}
-
 	if userInfo.UUID == "" {
 		err = fmt.Errorf("Can't find %s@%s ", name, ServerNameEngToKor[server])
 		return
 	}
 
-	for opt, _ := range flagMap {
-		switch opt {
-		case "-stat":
-			//getUserStatus(userInfo.UUID)
-		case "-save":
-			//getUserSummary(userInfo.UUID)
-			//saveUserSummary()
-		case "-load":
-			//getUserSummary(userInfo.UUID)
-		case "-diff":
-			//getUserSummary(userInfo.UUID)
-			//getUserHistory(userInfo.UUID)
-		case "-history":
-			//getUserHistory(userInfo.UUID)
+	docUser, err := getUserData(userInfo.UUID)
+	if err != nil {
+		return
+	}
+
+	for opt := range flagMap {
+		userInfo.Character, err = parseUser(docUser)
+		if err != nil {
+			return
+		}
+
+		if opt == "-stat" {
+			userInfo.Stat, err = parseUserDetail(docUser)
 		}
 	}
 	return
@@ -184,6 +185,49 @@ func findUUID(params *url.Values) (uuid string, err error) {
 			uuid = path[len(path)-1]
 		}
 	})
+
+	return
+}
+
+func getUserData(uuid string) (docUser *goquery.Document, err error) {
+	aa := archeage.New(http.DefaultClient)
+	urlUser := archeage.SetURI(archeage.URLArcheage, PathSearch+uuid, nil)
+	docUser, err = aa.Get(urlUser.String())
+	if err != nil {
+		return
+	}
+	return
+}
+func parseUser(docUser *goquery.Document) (character *Character, err error) {
+	character = &Character{}
+
+	character.Name = strings.Trim(docUser.Find(archeage.CharacterName).Text(), "\t\n\t ")
+	character.Server = docUser.Find(archeage.CharacterServer).Text()[1:]
+	character.Union = docUser.Find(archeage.CharacterUnion).Text()
+	character.Expedition = docUser.Find(archeage.CharacterExpedition).Find("span").Text()
+	character.Score = docUser.Find(archeage.CharacterEquipScore).Text()
+	character.SavedAt = time.Now().Format("2006-01-02 15:04")
+
+	if character.Expedition == "" {
+		character.Expedition = "-"
+	}
+	return
+}
+func parseUserDetail(doc *goquery.Document) (stats *Status, err error) {
+	stats = &Status{}
+	n := reflect.TypeOf(Status{}).NumField()
+	for i := 0; i < n; i++ {
+		statQuery := fmt.Sprintf(archeage.CharacterBasicDPS, i+1)
+		stat := doc.Find(statQuery).Text()
+
+		idx := strings.Index(stat, "\n")
+		if idx == -1 {
+			idx = len(stat) - 1
+		}
+
+		stat = stat[:idx]
+		reflect.ValueOf(stats).Elem().Field(i).SetString(stat)
+	}
 
 	return
 }
