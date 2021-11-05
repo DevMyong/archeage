@@ -45,5 +45,8 @@ func (a *Archeage) do(method, url string, body io.Reader) (*goquery.Document, er
 }
 
 func SetURI(host string, path string, params *url.Values) url.URL {
+	if params == nil{
+		return url.URL{Scheme: SchemeDefault, Host: host, Path: path}
+	}
 	return url.URL{Scheme: SchemeDefault, Host: host, Path: path, RawQuery: params.Encode()}
 }
