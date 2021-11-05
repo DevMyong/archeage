@@ -19,6 +19,14 @@ const (
 
 	SchemeDefault = "https"
 	URLArcheage   = "archeage.xlgames.com"
+
+	CharacterName       = "a.character_name"
+	CharacterServer     = ".character_server"
+	CharacterUnion      = ".character-union"
+	CharacterExpedition = ".character_exped"
+	CharacterEquipScore = ".score"
+	CharacterBasicDPS   = "#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(%d) > dd"
+
 )
 
 var ServerNameMap = map[string]string{
