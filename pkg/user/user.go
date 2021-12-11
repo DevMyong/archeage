@@ -107,12 +107,12 @@ func NewUserInfo(args Args, flagMap FlagMap) (userInfo User, err error) {
 		return
 	}
 
-	for opt := range flagMap {
-		userInfo.Character, err = parseUser(docUser)
-		if err != nil {
-			return
-		}
+	userInfo.Character, err = parseUser(docUser)
+	if err != nil {
+		return
+	}
 
+	for opt := range flagMap {
 		if opt == "-stat" {
 			userInfo.Stat, err = parseUserDetail(docUser)
 		}
